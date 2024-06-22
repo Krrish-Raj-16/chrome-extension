@@ -1,0 +1,38 @@
+body{
+    margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #3357a9;
+  color:#ffffff;
+  width:670px;
+}
+a{
+    color:white;
+}
+
+h1{
+    margin-left:15%;
+
+}
+
+h3{
+    margin-top:5%;
+    margin-left: 3%;
+}
+
+#blockedSites{
+    font-weight: lighter;
+}
+
+#inputLink , #inputDeleteLink{
+    margin-left:3%;
+    height:25px;
+}
+
+#inputEnter , #inputDeleteEnter{
+    height:32px;
+    font-size: 0.9rem;
+    margin-left:2%;
+    border-radius: 5px;
+    background-color: #3395a2;
+    color:white;
+}
