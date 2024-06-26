@@ -1,6 +1,11 @@
 var stringOff = "Start";
 var stringOn = "Stop";
 
+// document.getElementById('setReminder').addEventListener('click', () => {
+//   chrome.alarms.create("breakReminder", { periodInMinutes: 60 });
+//   alert('Break reminder set for every hour.');
+// });
+
 document.addEventListener('DOMContentLoaded', function() {
   var buttonState = document.getElementById("start");
   

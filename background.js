@@ -3,7 +3,7 @@ var state, links, time, totalSeconds; // local vars that hold storage values
 
 function blockSite() 
 {
-    chrome.tabs.update({url: "../html/restrict.html"})
+    chrome.tabs.update({url: "./html/restrict.html"})
 }
 
 /*
@@ -19,7 +19,7 @@ function checkSite()
 
         // Gets the data from the local storage
         state = data.state;
-        links = data.links;
+        links = data.links ||  [];
         //distractions = data.distractions;
         // If not active productive session, then continue as normal.
         if(!state) return;
@@ -48,6 +48,21 @@ function checkSite()
         });
     })
 }
+
+chrome.tabs.onActivated.addListener(checkSite);
+chrome.tabs.onUpdated.addListener(checkSite);
+
+// Initialize the state and links in storage if not already set
+chrome.runtime.onInstalled.addListener(function() {
+    chrome.storage.local.get(["state", "links"], function(data) {
+        if (typeof data.state === "undefined") {
+            chrome.storage.local.set({state: false});
+        }
+        if (typeof data.links === "undefined") {
+            chrome.storage.local.set({links: []});
+        }
+    });
+});
 
 // to store all tabs hostname and their usage time
 
@@ -151,68 +166,17 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 });
 
+// for break reminders
 
+function showBreakReminder() {
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs && tabs.length > 0) {
+          chrome.tabs.sendMessage(tabs[0].id, {type: "show_break_reminder"});
+      } else {
+          console.error("No active tab found.");
+      }
+  });
+}
 
-
-
-
-
-
-
-
-
-
-
-// // Initialize storage for tracking time
-// chrome.runtime.onInstalled.addListener(() => {
-//     chrome.storage.local.set({ sites: {}, totalMinutes: 0, dailyUsage: {} });
-//     // Set an alarm to trigger every minute
-//     chrome.alarms.create('trackTime', { periodInMinutes: 1 });
-//     // Set an alarm to remind user every hour
-//     chrome.alarms.create('hourlyReminder', { periodInMinutes: 60 });
-//   });
-  
-//   // Listener for alarm events
-//   chrome.alarms.onAlarm.addListener((alarm) => {
-//     if (alarm.name === 'trackTime') {
-//       trackTime();
-//     } else if (alarm.name === 'hourlyReminder') {
-//       sendReminder();
-//     }
-//   });
-  
-//   // Function to track time on current tab
-//   function trackTime() {
-//     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-//       if (tabs.length === 0) return;
-//       const url = new URL(tabs[0].url);
-//       const domain = url.hostname;
-      
-//       chrome.storage.local.get(['sites', 'totalMinutes', 'dailyUsage'], (data) => {
-//         const sites = data.sites || {};
-//         const totalMinutes = data.totalMinutes || 0;
-//         const dailyUsage = data.dailyUsage || {};
-  
-//         // Increment time for the current site
-//         sites[domain] = (sites[domain] || 0) + 1;
-//         dailyUsage[new Date().toLocaleDateString()] = (dailyUsage[new Date().toLocaleDateString()] || 0) + 1;
-  
-//         chrome.storage.local.set({ 
-//           sites: sites, 
-//           totalMinutes: totalMinutes + 1, 
-//           dailyUsage: dailyUsage 
-//         });
-//       });
-//     });
-//   }
-  
-//   // Function to send hourly reminder
-//   function sendReminder() {
-//     chrome.notifications.create({
-//       type: 'basic',
-//       iconUrl: 'icons/icon128.png',
-//       title: 'Time for a break!',
-//       message: 'Take a glass of water and do some stretches.'
-//     });
-//   }
-  
+// Set a timer to call showBreakReminder every hour
+setInterval(showBreakReminder, 60 * 60 * 1000);
