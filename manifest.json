@@ -7,7 +7,8 @@
       "storage",
       "tabs",
       "alarms",
-      "activeTab"
+      "activeTab",
+      "notifications"
     ],
     "background": {
       "service_worker": "background.js"
@@ -25,6 +26,9 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
+    "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
@@ -33,7 +37,7 @@
     ],
     "web_accessible_resources": [
       {
-        "resources": ["stretching_video1.gif", "stretching_video2.gif", "stretching_video3.gif"],
+        "resources": ["stretch1.png", "stretch2.png", "stretch3.png" , "./html/restrict.html"],
         "matches": ["<all_urls>"]
       }
     ]

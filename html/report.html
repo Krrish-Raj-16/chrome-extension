@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REPORT</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usage Report</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      height: 500px;
+      width:800px;
+      background-color: #3357a9;
+      color:white;
+    }
+    #chart-container {
+      width: 90%;
+      margin: 0;
+      height:90%;
+      padding-top:5%;
+      padding-left: 0;
+      justify-content: center;
+    }
+    #usageChart {
+      width: 700px; 
+      height: 350px; 
+      color:white;
+      font-weight: bold;
+    }
+    a{
+        color:white;
+    }
+  </style>
 </head>
 <body>
-    
+  <h1><a href="popup.html">Site Usage Report</a></h1>
+  <div id="chart-container">
+    <canvas id="usageChart"></canvas>
+  </div>
+  <script src="../report.js"></script>
 </body>
 </html>
